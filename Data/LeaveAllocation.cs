@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace LeaveManager.Models
+namespace LeaveManager.Data
 {
     [Table("LeaveAllocations")]
     public class LeaveAllocation
@@ -19,5 +19,6 @@ namespace LeaveManager.Models
         [ForeignKey("LeaveTypeId")]
         public LeaveType LeaveType { get; set; }
         public int LeaveTypeId { get; set; }
+        public int Period { get; set; }
     }
 }

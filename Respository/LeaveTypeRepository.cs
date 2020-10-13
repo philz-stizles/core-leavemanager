@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using LeaveManager.Contracts;
 using LeaveManager.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace LeaveManger.Repository
 {
@@ -14,24 +16,27 @@ namespace LeaveManger.Repository
             _db = db;
         } 
 
-        public bool Create(LeaveType entity)
+        public async Task<bool> CreateAsync(LeaveType entity)
         {
-            throw new NotImplementedException();
+            await _db.LeaveTypes.AddAsync(entity);
+            return await SaveAsync(); 
         }
 
-        public bool Delete(LeaveType entity)
+        public async Task<bool> DeleteAsync(LeaveType entity)
         {
-            throw new NotImplementedException();
+
+            _db.LeaveTypes.Remove(entity);
+            return await SaveAsync();
         }
 
-        public ICollection<LeaveType> FindAll()
+        public async Task<ICollection<LeaveType>> FindAllAsync()
         {
-            throw new NotImplementedException();
+            return await _db.LeaveTypes.ToListAsync();
         }
 
-        public LeaveType FindById(int id)
+        public async Task<LeaveType> FindByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _db.LeaveTypes.FindAsync(id);
         }
 
         public ICollection<LeaveType> GetEmployeesByLeaveType(int id)
@@ -39,14 +44,20 @@ namespace LeaveManger.Repository
             throw new NotImplementedException();
         }
 
-        public bool Save()
+        private async Task<bool> SaveAsync()
         {
-            throw new NotImplementedException();
+            return await _db.SaveChangesAsync() > 0;
         }
 
-        public bool Update(LeaveType entity)
+        public async Task<bool> UpdateAsync(LeaveType entity)
         {
-            throw new NotImplementedException();
+            _db.LeaveTypes.Update(entity);
+            return await SaveAsync();
+        }
+
+        public async Task<bool> IsExistsAsync(int id)
+        {
+            return await _db.LeaveTypes.AnyAsync(l => l.Id == id);
         }
     }
 }

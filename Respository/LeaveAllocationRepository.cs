@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using LeaveManager.Contracts;
 using LeaveManager.Data;
-using LeaveManager.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LeaveManger.Repository
 {
@@ -14,34 +16,58 @@ namespace LeaveManger.Repository
         {
             _db = db;
         }
-        public bool Create(LeaveAllocation entity)
+        public async Task<bool> CreateAsync(LeaveAllocation entity)
+        {
+            await _db.LeaveAllocations.AddAsync(entity);
+            return await SaveAsync(); 
+        }
+
+        public async Task<bool> DeleteAsync(LeaveAllocation entity)
+        {
+
+            _db.LeaveAllocations.Remove(entity);
+            return await SaveAsync();
+        }
+
+        public async Task<ICollection<LeaveAllocation>> FindAllAsync()
+        {
+            return await _db.LeaveAllocations.ToListAsync();
+        }
+
+        public async Task<LeaveAllocation> FindByIdAsync(int id)
+        {
+            return await _db.LeaveAllocations.FindAsync(id);
+        }
+
+        public ICollection<LeaveAllocation> GetEmployeesByLeaveAllocation(int id)
         {
             throw new NotImplementedException();
         }
 
-        public bool Delete(LeaveAllocation entity)
+        private async Task<bool> SaveAsync()
         {
-            throw new NotImplementedException();
+            return await _db.SaveChangesAsync() > 0;
         }
 
-        public ICollection<LeaveAllocation> FindAll()
+        public async Task<bool> UpdateAsync(LeaveAllocation entity)
         {
-            throw new NotImplementedException();
+            _db.LeaveAllocations.Update(entity);
+            return await SaveAsync();
         }
 
-        public LeaveAllocation FindById(int id)
+        public async Task<bool> IsExistsAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _db.LeaveAllocations.AnyAsync(l => l.Id == id);
         }
 
-        public bool Save()
+        public async Task<bool> UserHasLeaveForPeriodAsync(int leaveTypeId, string employeeId)
         {
-            throw new NotImplementedException();
-        }
-
-        public bool Update(LeaveAllocation entity)
-        {
-            throw new NotImplementedException();
+            var leaveAllocations = await FindAllAsync();
+            return leaveAllocations
+                .Where(la => la.LeaveTypeId == leaveTypeId
+                    && la.EmployeeId == employeeId
+                    && la.Period == DateTime.Now.Year
+                ).Any();
         }
     }
 }

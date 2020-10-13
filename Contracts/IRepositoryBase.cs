@@ -1,14 +1,15 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LeaveManager.Contracts
 {
     public interface IRepositoryBase<T> where T : class
     {
-        ICollection<T> FindAll();
-        T FindById(int id);
-        bool Create(T entity);
-        bool Update(T entity);
-        bool Delete(T entity);
-        bool Save();
+        Task<ICollection<T>> FindAllAsync();
+        Task<T> FindByIdAsync(int id);
+        Task<bool> IsExistsAsync(int id);
+        Task<bool> CreateAsync(T entity);
+        Task<bool> UpdateAsync(T entity);
+        Task<bool> DeleteAsync(T entity);
     }
 }

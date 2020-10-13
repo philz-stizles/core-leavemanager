@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
-namespace LeaveManager.Models
+namespace LeaveManager.Data
 {
     [Table("Employees")]
     public class Employee : IdentityUser

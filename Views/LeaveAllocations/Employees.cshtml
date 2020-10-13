@@ -1,0 +1,67 @@
+@model IEnumerable<LeaveManager.Models.EmployeeVM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    <div class="d-flex justify-content-end my-4">
+        <p class="m-0">
+            <a class="btn btn-success btn-sm" asp-action="Create">Create New <i class="fa fa-plus" ></i></a>
+        </p>
+    </div>
+    <div class="d-flex justify-content-between my-3">
+        <div class="d-flex align-items-center"><span>Show</span>&nbsp;
+            <select type="search" class="form-control form-control-sm">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+            </select>&nbsp;
+            <span>entries</span>
+        </div>
+        <div class="d-flex align-items-center"><span class="d-block">Search:</span>&nbsp;<input type="search" class="form-control form-control-sm"/></div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Firstname)</th>
+                <th>@Html.DisplayNameFor(model => model.Lastname)</th>
+                <th>@Html.DisplayNameFor(model => model.Email)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model){
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Firstname)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Lastname)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                    <td class="d-flex justify-content-end">
+                        <a class="btn btn-info btn-sm ml-2" asp-action="Details" asp-route-id="@item.Id" aria-hidden="true">
+                            Details <i class="fa fa-info"></i>
+                        </a>
+                        <a class="btn btn-danger btn-sm ml-2" asp-action="Deactivate" asp-route-id="@item.Id" aria-hidden="true">
+                            Deactivate <i class="fa fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-between my-4">
+        <div>Showing 1 to 3 of @Model.Count() entries</div>
+        <div>
+            <span>Previous</span>&nbsp;&nbsp;  
+            @for (int i = 1; i < 5; i++){
+                if(i >= 4){
+                    <a style="color: #d8ddef" class="btn btn-sm btn-outline">....</a>
+                    break;
+                }
+                <a class="btn btn-sm btn-outline-secondary">@i</a>
+            }
+            &nbsp;&nbsp;<span>Next</span>
+        </div>
+    </div>
+</div>

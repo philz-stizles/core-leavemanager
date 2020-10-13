@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace LeaveManager.Models
+namespace LeaveManager.Data
 {
     [Table("LeaveHistories")]
     public class LeaveHistory

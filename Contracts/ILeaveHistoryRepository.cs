@@ -1,4 +1,4 @@
-using LeaveManager.Models;
+using LeaveManager.Data;
 
 namespace LeaveManager.Contracts
 {
